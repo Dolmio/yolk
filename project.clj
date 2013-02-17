@@ -4,7 +4,7 @@
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :min-lein-version "2.0.0"
-  :dependencies [[org.clojure/clojure "1.5.0-RC1"]
+  :dependencies [[org.clojure/clojure "1.4.0"]
                  [jayq "2.2.0"]]
   :plugins [[lein-cljsbuild "0.3.0"]]
   :cljsbuild {:builds
@@ -19,6 +19,11 @@
                :unit
                {:source-paths ["src" "test"]
                 :compiler {:output-to "resources/js/unit-test.js"
+                           :optimizations :whitespace
+                           :pretty-print true}}
+               :demo
+               {:source-paths ["src" "demo"]
+                :compiler {:output-to "resources/js/demo.js"
                            :optimizations :whitespace
                            :pretty-print true}}}
               :test-commands

@@ -1,5 +1,5 @@
 (ns yolk.bacon
-  (:refer-clojure :exclude [map next filter merge]))
+  (:refer-clojure :exclude [map next filter merge repeatedly]))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Creation

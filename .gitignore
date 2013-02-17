@@ -14,3 +14,6 @@ pom.xml.asc
 #/resources/public/js/main-debug.js
 #/resources/public/js/main.js
 /resources/js/unit-test.js
+/repl
+/out
+/resources/js/demo.js
