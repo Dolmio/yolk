@@ -3,23 +3,14 @@
             [yolk.model :as bm]
             [yolk.ui :as ui]
             [jayq.core :refer [$] :as j]
+            [model :as model]
             [clojure.browser.repl :as repl]))
-
-(defn make-item [name]
-  {:id (gensym)
-   :name name
-   :created-at (js/Date.)
-   :last-updated (js/Date.)})
-
-(def items (vec (map #(make-item (str "Name" %))
-                     (range 1 (inc 4)))))
 
 (defn tag
   ([tag-name]
      ($ (str "<" tag-name "/>")))
   ([tag-name content]
      ($ (str "<" tag-name ">" content "</" tag-name ">"))))
-
 
 (defn item-template [item]
   (let [$dl (tag "dl")
@@ -44,7 +35,7 @@
   (repl/connect "http://localhost:9000/repl"))
 
 (defn ^:export main []
-  (doseq [item items]
+  (doseq [item model/items]
     (let [$li (tag "li")]
       (j/append $li (item-template item))
       (j/append $item-list $li))))
