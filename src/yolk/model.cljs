@@ -21,8 +21,8 @@
 (defn map->readers [m current]
   (reduce (fn [result [k v]]
             (assoc result k
-                   (b/scan current v (fn [_ person]
-                                       (get person k)))))
+                   (b/scan current v (fn [_ x]
+                                       (get x k)))))
           {} m))
 
 (defn matching [source k v]
