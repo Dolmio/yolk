@@ -23,13 +23,15 @@
 
 (defn item-template [item]
   (let [$dl (tag "dl")
-        di (fn [k v] [(tag "dt" (pr-str k))
+        di (fn [k v] [(tag "dt" (str (name k) ":"))
                       (tag "dd" (pr-str v))])]
     (doseq [[k v] item
             :let [[$dt $dd] (di k v)]]
       (-> $dl
           (j/append $dt)
           (j/append $dd)))
+    (j/append $dl "<dt></dt><dd><a class=\"btn btn-small push-right\" href=\"#\">Update</a></dd>")
+
     (j/prop $dl "id" (:id item))
     (j/add-class $dl "dl-horizontal")
     $dl))
@@ -43,7 +45,6 @@
 
 (defn ^:export main []
   (doseq [item items]
-    (js/console.log (pr-str item))
     (let [$li (tag "li")]
       (j/append $li (item-template item))
       (j/append $item-list $li))))
