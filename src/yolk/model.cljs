@@ -1,7 +1,7 @@
 (ns yolk.model
   (:require [yolk.bacon :as b]))
 
-(defn make-mutators [target & pairs]
+(defn buses [target & pairs]
   (let [mutator-map (apply hash-map pairs)
         buses (reduce (fn [m [k v]]
                         (assoc m k (js/Bacon.Bus.)))
@@ -15,12 +15,12 @@
       :all-changes all-changes
       :current current)))
 
-(defn map->readers [m current]
+(defn map->properties [initial-map current]
   (reduce (fn [result [k v]]
             (assoc result k
                    (b/scan current v (fn [_ x]
                                        (get x k)))))
-          {} m))
+          {} initial-map))
 
 (defn matching [source k v]
    (b/map source (fn [xs] (filter #(= v (k %)) xs))))

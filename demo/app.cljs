@@ -3,8 +3,8 @@
             [yolk.model :as bm]
             [yolk.ui :as ui]
             [jayq.core :refer [$] :as j]
-            [model :as model]
-            [clojure.browser.repl :as repl]))
+            [model :as model]))
+
 (def item-template
   "<dl class=\"dl-horizontal\">
 <dt>Name</dt>
@@ -20,9 +20,6 @@
 
 (def $item-list ($ "#item-list"))
 
-(defn repl []
-  (repl/connect "http://localhost:9000/repl"))
-
 (defn display-item [$parent item]
   (let [$tmpl ($ item-template)]
     (ui/inner ($ "dd.name" $tmpl) (:name item))
@@ -37,8 +34,7 @@
                 (fn [items]
                   (j/empty $item-list)
                   (doseq [item items]
-                    (display-item $item-list item))))
-    (b/log-pr (:current models))))
+                    (display-item $item-list item))))))
 
 (main)
 
