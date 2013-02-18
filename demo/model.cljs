@@ -23,7 +23,7 @@
                :mark-delete mark-delete)]
     (assoc model
       :id (:id item-map)
-      :remove (-> model :mark-delete (b/map (:current model))))))
+      :remove (bm/map-current model :mark-delete))))
 
 (defbus remove-item [item] [items]
   (vec (remove #(= (:id item) (:id %)) items)))

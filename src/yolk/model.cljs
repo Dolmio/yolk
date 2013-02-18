@@ -36,6 +36,9 @@
       (b/plug (get model bus-name)
             (b/merge-all (map #(get % stream-name) (:children model)))))
 
+(defn map-current [model f]
+   (-> model f (b/map (:current model))))
+
 (defn matching [source k v]
    (b/map source (fn [xs] (filter #(= v (k %)) xs))))
 
