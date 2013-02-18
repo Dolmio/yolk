@@ -116,6 +116,18 @@
 ;; Bus
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(defn bus []
+  (js/Bacon.Bus.))
+
+(defn push [bus x]
+  (.push bus x))
+
+(defn end [bus]
+  (.end bus))
+
+(defn error [bus e]
+  (.error bus e))
+
 (defn plug [bus stream]
   (.plug bus stream))
 
