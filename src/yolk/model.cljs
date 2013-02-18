@@ -1,9 +1,6 @@
 (ns yolk.model
   (:require [yolk.bacon :as b]))
 
-(defn property-bus [f]
-  (b/map (js/Bacon.Bus.) f))
-
 (defn make-mutators [target & pairs]
   (let [mutator-map (apply hash-map pairs)
         buses (reduce (fn [m [k v]]
