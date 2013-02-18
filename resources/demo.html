@@ -3,10 +3,21 @@
     <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.0/css/bootstrap-combined.min.css" rel="stylesheet">
   </head>
   <body>
-    <div id="container" class="container">
-      <ul id="item-list" class="unstyled">
-        
-      </ul>
+    <div id="container" class="container" style="padding-top: 20px;">
+      <div class="row">
+        <div class="span12">
+          <form id="editor-form" class="">
+            <fieldset>
+            <label>Edit: </label>
+            <input type="text" name="edit"/>
+            <button type="submit" class="button">Update</button>
+            </fieldset>
+          </form>
+        </div>
+        <div class="span12">
+          <ul id="item-list" class="unstyled"></ul>
+        </div>
+      </div>
     </div>
     <script src="js/jquery-1.8.1.min.js"></script>
     <script src="js/Bacon.js"></script>

@@ -6,24 +6,23 @@
             [model :as model]))
 
 (def item-template
-  "<dl class=\"dl-horizontal\">
-<dt>Name</dt>
-<dd class=\"name\"></dd>
-<dt>Last Updated</dt>
-<dd class=\"updated\"></dd>
-<dt>Button</dt>
-<dd>
-  <a href=\"#\" class=\"update-button btn\">Update TS</a>
-  <a href=\"#\" class=\"remove-button btn\">Remove</a>
-</dd>
-</dl>")
+  "<div class=\"item\" style=\"border-top: 1px solid black\"><p>
+<span class=\"name\"/>
+<span class=\"updated\"/>
+</p>
+<p>
+  <a href=\"#\" class=\"update-button\">Update TS</a>
+  |
+  <a href=\"#\" class=\"remove-button\">Remove</a>
+</p>
+</div>")
 
 (def $item-list ($ "#item-list"))
 
 (defn display-item [$parent item]
   (let [$tmpl ($ item-template)]
-    (ui/inner ($ "dd.name" $tmpl) (:name item))
-    (ui/inner ($ "dd.updated" $tmpl) (-> (:last-updated item)
+    (ui/inner ($ ".name" $tmpl) (:name item))
+    (ui/inner ($ ".updated" $tmpl) (-> (:last-updated item)
                                          (b/map pr-str)))
     (b/plug (:update-ts item) (ui/click ($ "a.update-button" $tmpl)))
     (b/plug (:mark-delete item) (ui/click ($ "a.remove-button" $tmpl)))
