@@ -109,9 +109,7 @@
   (.merge stream stream2))
 
 (defn merge-all [streams]
-  (reduce (fn [result stream]
-            (b/merge result stream))
-          streams))
+  (js/Bacon.mergeAll (into-array streams)))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -127,3 +125,6 @@
 
 (defn log [stream]
   (.log stream))
+
+(defn log-pr [stream]
+  (.log (map stream pr-str)))

@@ -14,6 +14,7 @@
 <dt>Button</dt>
 <dd>
   <a href=\"#\" class=\"update-button btn\">Update TS</a>
+  <a href=\"#\" class=\"remove-button btn\">Remove</a>
 </dd>
 </dl>")
 
@@ -22,16 +23,22 @@
 (defn repl []
   (repl/connect "http://localhost:9000/repl"))
 
-(defn display-item [item]
+(defn display-item [$parent item]
   (let [$tmpl ($ item-template)]
     (ui/inner ($ "dd.name" $tmpl) (:name item))
     (ui/inner ($ "dd.updated" $tmpl) (:updated item))
     (b/plug (:update-ts item) (ui/click ($ "a.update-button" $tmpl)))
-    (j/append $item-list $tmpl)))
+    (b/plug (:mark-delete item) (ui/click ($ "a.remove-button" $tmpl)))
+    (j/append $parent $tmpl)))
 
 (defn ^:export main []
-  (doseq [item model/item-models]
-    (display-item item)))
+  (let [models (model/items-model model/items)]
+    (b/on-value (:current models)
+                (fn [items]
+                  (j/empty $item-list)
+                  (doseq [item items]
+                    (display-item $item-list item))))
+    (b/log-pr (:current models))))
 
 (main)
 
