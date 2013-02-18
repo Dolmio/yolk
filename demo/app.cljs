@@ -6,26 +6,20 @@
             [model :as model]
             [clojure.browser.repl :as repl]))
 
-(defn tag
-  ([tag-name]
-     ($ (str "<" tag-name "/>")))
-  ([tag-name content]
-     ($ (str "<" tag-name ">" content "</" tag-name ">"))))
+(defn log-pr [x]
+  (js/console.log (pr-str x)))
 
-(defn item-template [item]
-  (let [$dl (tag "dl")
-        di (fn [k v] [(tag "dt" (str (name k) ":"))
-                      (tag "dd" (pr-str v))])]
-    (doseq [[k v] item
-            :let [[$dt $dd] (di k v)]]
-      (-> $dl
-          (j/append $dt)
-          (j/append $dd)))
-    (j/append $dl "<dt></dt><dd><a class=\"btn btn-small push-right\" href=\"#\">Update</a></dd>")
-
-    (j/prop $dl "id" (:id item))
-    (j/add-class $dl "dl-horizontal")
-    $dl))
+(def item-template
+  "<dl class=\"dl-horizontal\">
+<dt>Name</dt>
+<dd class=\"name\"></dd>
+<dt>Last Updated</dt>
+<dd class=\"updated\"></dd>
+<dt>Button</dt>
+<dd>
+  <a href=\"#\" class=\"update-button btn\">Update TS</a>
+</dd>
+</dl>")
 
 (def $body ($ "body"))
 (def $container ($ "#container"))
@@ -34,11 +28,16 @@
 (defn repl []
   (repl/connect "http://localhost:9000/repl"))
 
+(defn display-item [item]
+  (let [$tmpl ($ item-template)]
+    (ui/inner ($ "dd.name" $tmpl) (:name item))
+    (ui/inner ($ "dd.updated" $tmpl) (:updated item))
+    (j/append $item-list $tmpl)))
+
 (defn ^:export main []
-  (doseq [item model/items]
-    (let [$li (tag "li")]
-      (j/append $li (item-template item))
-      (j/append $item-list $li))))
+  (doseq [item model/item-models]
+    (log-pr (keys item))
+    (display-item item)))
 
 (main)
 
