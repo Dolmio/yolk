@@ -19,9 +19,8 @@
   (let [model (bm/make-mutators item-map :update-ts update-ts)
         model (merge model
                      (bm/map->readers item-map (:current model)))]
-    (assoc model :updated (-> model
-                              :last-updated
-                              (b/map pr-str)))))
+    (assoc model
+      :updated (-> model :last-updated (b/map pr-str)))))
 
 
 (def item-models (vec (map item-model items)))

@@ -5,10 +5,6 @@
             [jayq.core :refer [$] :as j]
             [model :as model]
             [clojure.browser.repl :as repl]))
-
-(defn log-pr [x]
-  (js/console.log (pr-str x)))
-
 (def item-template
   "<dl class=\"dl-horizontal\">
 <dt>Name</dt>
@@ -21,8 +17,6 @@
 </dd>
 </dl>")
 
-(def $body ($ "body"))
-(def $container ($ "#container"))
 (def $item-list ($ "#item-list"))
 
 (defn repl []
@@ -32,11 +26,11 @@
   (let [$tmpl ($ item-template)]
     (ui/inner ($ "dd.name" $tmpl) (:name item))
     (ui/inner ($ "dd.updated" $tmpl) (:updated item))
+    (b/plug (:update-ts item) (ui/click ($ "a.update-button" $tmpl)))
     (j/append $item-list $tmpl)))
 
 (defn ^:export main []
   (doseq [item model/item-models]
-    (log-pr (keys item))
     (display-item item)))
 
 (main)
