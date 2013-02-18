@@ -22,6 +22,20 @@
                                        (get x k)))))
           {} initial-map))
 
+(defn map-model [target & pairs]
+  (let [model (apply buses target pairs)]
+    (merge model
+           (map->properties target (:current model)))))
+
+(defn list-models [items f & pairs]
+  (let [children (map f items)
+        model (apply buses children pairs)]
+    (assoc model :children children)))
+
+(defn plug-children [model bus-name stream-name]
+      (b/plug (get model bus-name)
+            (b/merge-all (map #(get % stream-name) (:children model)))))
+
 (defn matching [source k v]
    (b/map source (fn [xs] (filter #(= v (k %)) xs))))
 

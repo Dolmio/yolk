@@ -23,7 +23,8 @@
 (defn display-item [$parent item]
   (let [$tmpl ($ item-template)]
     (ui/inner ($ "dd.name" $tmpl) (:name item))
-    (ui/inner ($ "dd.updated" $tmpl) (:updated item))
+    (ui/inner ($ "dd.updated" $tmpl) (-> (:last-updated item)
+                                         (b/map pr-str)))
     (b/plug (:update-ts item) (ui/click ($ "a.update-button" $tmpl)))
     (b/plug (:mark-delete item) (ui/click ($ "a.remove-button" $tmpl)))
     (j/append $parent $tmpl)))
