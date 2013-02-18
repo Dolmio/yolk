@@ -1,14 +1,20 @@
 (ns yolk.model
-  (:require [yolk.bacon :as b]))
+  (:require [yolk.bacon :as b]
+            [clojure.string :as string]))
 
-(defn buses [target & pairs]
-  (let [mutator-map (apply hash-map pairs)
-        buses (reduce (fn [m [k v]]
-                        (assoc m k (js/Bacon.Bus.)))
-                      {} mutator-map)
-        change-streams (map (fn [[k bus]]
-                              (b/map bus (get mutator-map k)))
-                            buses)
+(defn- fname->kw [f]
+  (-> f
+      .-name
+      (string/replace #"_" "-")
+      keyword))
+
+(defn buses [target & modifiers]
+  (let [[buses change-streams] (reduce (fn [[bs streams] f]
+                                         (let [bus (b/bus)]
+                                           [(assoc bs (fname->kw f) bus)
+                                            (conj streams (-> bus (b/map f)))]))
+                                       [{} []]
+                                       modifiers)
         all-changes (b/merge-all change-streams)
         current (b/scan all-changes target (fn [x f] (f x)))]
     (assoc buses
@@ -22,14 +28,14 @@
                                        (get x k)))))
           {} initial-map))
 
-(defn map-model [target & pairs]
-  (let [model (apply buses target pairs)]
+(defn map-model [target & modifiers]
+  (let [model (apply buses target modifiers)]
     (merge model
            (map->properties target (:current model)))))
 
-(defn list-models [items f & pairs]
+(defn list-models [items f & modifiers]
   (let [children (map f items)
-        model (apply buses children pairs)]
+        model (apply buses children modifiers)]
     (assoc model :children children)))
 
 (defn plug-children [model bus-name stream-name]
