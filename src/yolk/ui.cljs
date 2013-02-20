@@ -34,8 +34,11 @@
 (defn radio-group-value [$elem & [init]]
   (js/Bacon.UI.radioGroupValue $elem init))
 
-(defn checkbox-value [$elem & [init]]
-  (js/Bacon.UI.checkBoxValue $elem init))
+(defn checkbox-value [$elem & [selector]]
+  (-> (->stream $elem "change" selector)
+      (b/map #(-> % .-target $ (.prop "checked")))
+      b/to-property
+      b/skip-duplicates))
 
 (defn disabled [$elem property]
   (b/on-value property
