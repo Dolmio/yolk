@@ -48,3 +48,9 @@
               (fn [x?]
                 ((if x? j/remove-class j/add-class)
                  $elem "disabled"))))
+
+(defn remote [name & params]
+  (ajax {:url "_fetch"
+         :type "POST"
+         :data {:remote name
+                :params (pr-str (vec params))}}))
