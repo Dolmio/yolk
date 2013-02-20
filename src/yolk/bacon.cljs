@@ -1,5 +1,5 @@
 (ns yolk.bacon
-  (:refer-clojure :exclude [map next filter merge repeatedly]))
+  (:refer-clojure :exclude [filter map merge next not repeatedly]))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Creation
@@ -43,16 +43,22 @@
 ;; Observables
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(defn- kw->fn [maybe-kw]
+  (if (keyword? maybe-kw)
+    #(maybe-kw %)
+    maybe-kw))
+
+(defn not [stream]
+  (.not stream))
+
 (defn map [stream f-or-property]
-  (.map stream (if (keyword? f-or-property)
-                 #(f-or-property %)
-                 f-or-property)))
+  (.map stream (kw->fn f-or-property)))
 
 (defn delay [stream ms]
   (.delay stream ms))
 
-(defn filter [stream f]
-  (.filter stream f))
+(defn filter [stream f-or-property]
+  (.filter stream  (kw->fn f-or-property)))
 
 (defn on-value [stream f]
   (.onValue stream f))
@@ -69,6 +75,8 @@
 (defn do-action [observable f]
   (.doAction observable f))
 
+(defn flat-map [observable f]
+  (.flatMap observable f))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; EventStreams
@@ -88,8 +96,11 @@
 ;; Properties
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defn sampled-by [prop stream f]
-  (.sampledBy prop stream f))
+(defn sampled-by
+  ([prop stream]
+     (.sampledBy prop stream))
+  ([prop stream f]
+     (.sampledBy prop stream f)))
 
 (defn skip-duplicates [prop & [is-equal]]
   (.skipDuplicates prop is-equal))
@@ -139,4 +150,6 @@
   (.log stream))
 
 (defn log-pr [stream]
-  (.log (map stream pr-str)))
+  (-> stream
+      (map pr-str)
+      (on-value #(js/console.log %))))
