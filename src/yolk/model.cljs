@@ -38,9 +38,11 @@
         model (apply buses children modifiers)]
     (assoc model :children children)))
 
-(defn plug-children [model bus-name stream-name]
-      (b/plug (get model bus-name)
-            (b/merge-all (map #(get % stream-name) (:children model)))))
+(defn merge-children [model f-or-stream-name]
+  (b/merge-all (map f-or-stream-name (:children model))))
+
+(defn plug-children [model bus-name f-or-stream-name]
+      (b/plug (get model bus-name) (merge-children model f-or-stream-name)))
 
 (defn map-current [model f]
    (-> model f (b/map (:current model))))
