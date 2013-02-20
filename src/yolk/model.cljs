@@ -24,8 +24,9 @@
 (defn map->properties [initial-map current]
   (reduce (fn [result [k v]]
             (assoc result k
-                   (b/scan current v (fn [_ x]
-                                       (get x k)))))
+                   (-> (b/scan current v (fn [_ x]
+                                        (get x k)))
+                       b/skip-duplicates)))
           {} initial-map))
 
 (defn map-model [target & modifiers]
