@@ -28,9 +28,6 @@
 (defn checkbox-group-value [$checkboxes & [init]]
   (js/Bacon.UI.checkBoxGroupValue $checkboxes init))
 
-(defn ajax [params]
-  (js/Bacon.UI.ajax (clj->js params)))
-
 (defn radio-group-value [$elem & [init]]
   (js/Bacon.UI.radioGroupValue $elem init))
 
@@ -52,8 +49,3 @@
                 ((if x? j/remove-class j/add-class)
                  $elem "disabled"))))
 
-(defn remote [name & params]
-  (ajax {:url "_fetch"
-         :type "POST"
-         :data {:remote name
-                :params (pr-str (vec params))}}))
