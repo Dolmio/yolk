@@ -116,6 +116,9 @@
 ;; Properties
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(defn combine [prop prop2 f]
+  (.combine prop prop2 f))
+
 (defn sampled-by
   ([prop stream]
      (.sampledBy prop stream))
