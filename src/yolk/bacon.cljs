@@ -74,8 +74,11 @@
 (defn delay [stream ms]
   (.delay stream ms))
 
-(defn filter [stream f-or-property]
-  (.filter stream  (kw->fn f-or-property)))
+(defn filter
+  ([stream]
+      (filter stream identity))
+  ([stream f-or-property]
+     (.filter stream  (kw->fn f-or-property)))  )
 
 (defn on-value [stream f]
   (.onValue stream f))
