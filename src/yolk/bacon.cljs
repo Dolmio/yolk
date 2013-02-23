@@ -98,6 +98,9 @@
 (defn flat-map [observable f]
   (.flatMap observable f))
 
+(defn take-until [observable other]
+  (.takeUntil observable other))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; EventStreams
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -116,8 +119,11 @@
 ;; Properties
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defn combine [prop prop2 f]
-  (.combine prop prop2 f))
+(defn combine
+  ([prop prop2]
+     (.combine prop prop2))
+  ([prop prop2 f]
+     (.combine prop prop2 f)))
 
 (defn sampled-by
   ([prop stream]
@@ -144,6 +150,9 @@
 
 (defn merge-all [streams]
   (js/Bacon.mergeAll (into-array streams)))
+
+(defn combine-template [template]
+  (.combineTemplate (clj->js template)))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
