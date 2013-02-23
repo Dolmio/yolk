@@ -13,8 +13,9 @@
       (->stream "click" selector event-transformer)
       (.doAction ".preventDefault")))
 
-(defn change [$elem]
-  (.asEventStream $elem "change"))
+(defn change [$elem & [selector event-transformer]]
+  (-> $elem
+      (->stream "change" selector event-transformer)))
 
 (defn inner [$elem property]
   (b/on-value property (partial j/inner $elem)))
@@ -48,4 +49,3 @@
               (fn [x?]
                 ((if x? j/remove-class j/add-class)
                  $elem "disabled"))))
-
