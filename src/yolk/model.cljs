@@ -2,19 +2,13 @@
   (:require [yolk.bacon :as b]
             [clojure.string :as string]))
 
-(defn- fname->kw [f]
-  (-> f
-      .-name
-      (string/replace #"_" "-")
-      keyword))
-
 (defn buses [target & modifiers]
-  (let [[buses change-streams] (reduce (fn [[bs streams] f]
+  (let [[buses change-streams] (reduce (fn [[bs streams] [name f]]
                                          (let [bus (b/bus)]
-                                           [(assoc bs (fname->kw f) bus)
+                                           [(assoc bs name bus)
                                             (conj streams (-> bus (b/map f)))]))
                                        [{} []]
-                                       modifiers)
+                                       (partition 2 modifiers))
         all-changes (b/merge-all change-streams)
         current (b/scan all-changes target (fn [x f] (f x)))]
     (assoc buses
