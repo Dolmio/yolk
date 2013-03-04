@@ -152,7 +152,7 @@
   (js/Bacon.mergeAll (into-array streams)))
 
 (defn combine-template [template]
-  (.combineTemplate (clj->js template)))
+  (js/Bacon.combineTemplate (clj->js template)))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
