@@ -1,14 +1,14 @@
 (ns yolk.model
-  (:require [yolk.bacon :as b]))
+  (:require [yolk.bacon :as b]
+            [clojure.string :as string]))
 
-(defn buses [target & pairs]
-  (let [mutator-map (apply hash-map pairs)
-        buses (reduce (fn [m [k v]]
-                        (assoc m k (js/Bacon.Bus.)))
-                      {} mutator-map)
-        change-streams (map (fn [[k bus]]
-                              (b/map bus (get mutator-map k)))
-                            buses)
+(defn buses [target & modifiers]
+  (let [[buses change-streams] (reduce (fn [[bs streams] [name f]]
+                                         (let [bus (b/bus)]
+                                           [(assoc bs name bus)
+                                            (conj streams (-> bus (b/map f)))]))
+                                       [{} []]
+                                       (partition 2 modifiers))
         all-changes (b/merge-all change-streams)
         current (b/scan all-changes target (fn [x f] (f x)))]
     (assoc buses
@@ -18,23 +18,29 @@
 (defn map->properties [initial-map current]
   (reduce (fn [result [k v]]
             (assoc result k
-                   (b/scan current v (fn [_ x]
-                                       (get x k)))))
+                   (-> (b/scan current v (fn [_ x]
+                                        (get x k)))
+                       b/skip-duplicates)))
           {} initial-map))
 
-(defn map-model [target & pairs]
-  (let [model (apply buses target pairs)]
+(defn map-model [target & modifiers]
+  (let [model (apply buses target modifiers)]
     (merge model
            (map->properties target (:current model)))))
 
-(defn list-models [items f & pairs]
+(defn list-models [items f & modifiers]
   (let [children (map f items)
-        model (apply buses children pairs)]
+        model (apply buses children modifiers)]
     (assoc model :children children)))
 
-(defn plug-children [model bus-name stream-name]
-      (b/plug (get model bus-name)
-            (b/merge-all (map #(get % stream-name) (:children model)))))
+(defn merge-children [model f-or-stream-name]
+  (b/merge-all (map f-or-stream-name (:children model))))
+
+(defn plug-children [model bus-name f-or-stream-name]
+      (b/plug (get model bus-name) (merge-children model f-or-stream-name)))
+
+(defn map-current [model f]
+   (-> model f (b/map (:current model))))
 
 (defn matching [source k v]
    (b/map source (fn [xs] (filter #(= v (k %)) xs))))

@@ -18,18 +18,15 @@
 (defnotice mark-delete)
 
 (defn item-model [item-map]
-  (let [model (bm/map-model item-map
-               :update-ts update-ts
-               :mark-delete mark-delete)]
+  (let [model (bm/map-model item-map update-ts mark-delete)]
     (assoc model
       :id (:id item-map)
-      :remove (-> model :mark-delete (b/map (:current model))))))
+      :remove (bm/map-current model :mark-delete))))
 
 (defbus remove-item [item] [items]
   (vec (remove #(= (:id item) (:id %)) items)))
 
 (defn items-model [items]
-  (let [model (bm/list-models items item-model
-                              :remove-item remove-item)]
+  (let [model (bm/list-models items item-model remove-item)]
     (bm/plug-children model :remove-item :remove)
     model))
