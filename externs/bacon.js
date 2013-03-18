@@ -29,6 +29,7 @@ Bacon.Observable.prototype.onError = function() {};
 Bacon.Observable.prototype.onEnd = function() {};
 Bacon.Observable.prototype.errors = function() {};
 Bacon.Observable.prototype.filter = function() {};
+Bacon.Observable.prototype.takeUntil = function() {};
 Bacon.Observable.prototype.takeWhile = function() {};
 Bacon.Observable.prototype.endOnError = function() {};
 Bacon.Observable.prototype.take = function() {};
@@ -62,6 +63,8 @@ Bacon.EventStream.prototype.decorateWith = function() {};
 Bacon.EventStream.prototype.mapEnd = function() {};
 Bacon.EventStream.prototype.withHandler = function() {};
 Bacon.EventStream.prototype.withSubscribe = function() {};
+Bacon.EventStream.prototype.slidingWindow = function() {};
+
 
 Bacon.Property.prototype.sample = function() {};
 Bacon.Property.prototype.sampledBy = function() {};
