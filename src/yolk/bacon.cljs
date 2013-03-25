@@ -270,7 +270,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defn log-with [prefix]
-  #(js/console.log prefix (pr-str %))
-  )
+  #(js/console.log prefix (pr-str %)))
+
 (defn log-action [sexp]
   (log-with (str sexp " =>")))
