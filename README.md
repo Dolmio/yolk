@@ -1,6 +1,6 @@
 # yolk
 
-The best part of the egg
+The best part of the egg.
 
 ## License
 
