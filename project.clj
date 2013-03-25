@@ -16,11 +16,6 @@
                {:source-paths ["src" "test"]
                 :compiler {:output-to "resources/js/unit-test.js"
                            :optimizations :whitespace
-                           :pretty-print true}}
-               :demo
-               {:source-paths ["src" "demo"]
-                :compiler {:output-to "resources/js/demo.js"
-                           :optimizations :whitespace
                            :pretty-print true}}}
               :test-commands
               {"unit" ["phantomjs"
