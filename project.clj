@@ -1,4 +1,4 @@
-(defproject yolk "0.4.0"
+(defproject yolk "0.5.0"
   :description "Bacon and Eggs"
   :url "https://github.com/cicayda/yolk"
   :license {:name "Eclipse Public License"
@@ -15,11 +15,6 @@
                :unit
                {:source-paths ["src" "test"]
                 :compiler {:output-to "resources/js/unit-test.js"
-                           :optimizations :whitespace
-                           :pretty-print true}}
-               :demo
-               {:source-paths ["src" "demo"]
-                :compiler {:output-to "resources/js/demo.js"
                            :optimizations :whitespace
                            :pretty-print true}}}
               :test-commands

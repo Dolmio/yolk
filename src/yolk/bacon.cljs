@@ -39,7 +39,7 @@
   (js/Bacon.interval ms value))
 
 (defn sequentially [ms values]
-  (js/Bacon.sequentially ms values))
+  (js/Bacon.sequentially ms (into-array values)))
 
 (defn repeatedly [ms values]
   (js/Bacon.repeatedly ms values))
@@ -99,8 +99,8 @@
 (defn throttle [observable ms]
   (.throttle observable ms))
 
-(defn throttle2 [observable ms]
-  (.throttle2 observable ms))
+(defn debounce [observable ms]
+  (.debounce observable ms))
 
 (defn do-action [observable f]
   (.doAction observable f))
@@ -182,6 +182,9 @@
 (defn awaiting [stream stream2]
   (.awaiting stream stream2))
 
+(defn zip [stream stream2 f]
+  (.zip stream stream2 f))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Properties
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -236,14 +239,17 @@
 (defn merge-all [streams]
   (js/Bacon.mergeAll (into-array streams)))
 
-(defn combine-all [observables f]
-  (js/Bacon.combineAll (into-array observables) f))
-
 (defn combine-with [observables f]
   (js/Bacon.combineWith (into-array observables) f))
 
 (defn combine-template [template]
   (js/Bacon.combineTemplate (clj->js template)))
+
+(defn zip-as-array [streams]
+  (js/Bacon.zipAsArray (into-array streams)))
+
+(defn zip-with [streams f]
+  (js/Bacon.zipWith (into-array streams) f))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -270,7 +276,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defn log-with [prefix]
-  #(js/console.log prefix (pr-str %))
-  )
+  #(js/console.log prefix (pr-str %)))
+
 (defn log-action [sexp]
   (log-with (str sexp " =>")))

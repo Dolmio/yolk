@@ -1,10 +1,98 @@
 (ns yolk.bacon-test
-  (:require [qunit.core :refer [ok? equal? module]]
-            [yolk.bacon :as b]
-            [jayq.core :refer [$] :as j])
-  (:use-macros [qunit.macros :only [deftest]]))
+  (:require [qunit.core :refer [ok? equal? module start]]
+            [yolk.bacon :as b])
+  (:use-macros [qunit.macros :only [deftest defasynctest defblt]]))
 
 (module "Bacon Tests")
 
-(deftest "fail"
-  (equal? true true))
+(defblt "once" 1
+  (b/once true)
+  ok?)
+
+(defblt "once no arg" 1
+  (b/once)
+  (comp ok? nil?))
+
+(defblt "later" 1
+  (b/later 5 true)
+  ok?)
+
+(defblt "from-array" 1
+  (b/from-array [1])
+  #(equal? 1 %))
+
+(defblt "sequentially" 3
+  (b/sequentially 10 [1 2 3])
+  ok?)
+
+(defblt "map" 1
+  (-> (b/from-array [1])
+      (b/map inc))
+  #(equal? 2 %))
+
+(defblt "map keyword" 1
+  (-> (b/from-array [{:a 1}])
+      (b/map :a))
+  #(equal? 1 %))
+
+(defblt "filter" 1
+  (-> (b/from-array [1 2])
+      (b/filter even?))
+  #(equal? 2 %))
+
+(defblt "filter true" 1
+  (-> (b/from-array [false false true])
+      b/filter)
+  ok?)
+
+(defblt "filter multiple true" 2
+  (-> (b/from-array [true false true])
+      b/filter)
+  ok?)
+
+(defblt "take-while" 2
+  (-> (b/from-array [true true false])
+      (b/take-while identity))
+  ok?)
+
+(defblt "take n" 2
+  (-> (b/from-array [true true true])
+      (b/take 2))
+  ok?)
+
+(let [other (b/bus)]
+  (defblt "take-until" 2
+    (-> (b/sequentially 1 [1 2 3])
+        (b/do-action (fn [v]
+                       (when (> v 2) (b/push other v))))
+        (b/take-until other))
+    ok?))
+
+(defblt "skip n" 1
+  (-> (b/from-array [false false true])
+      (b/skip 2))
+  ok?)
+
+
+(defblt "not" 2
+  (-> (b/from-array [false false])
+      b/not)
+  ok?)
+
+(comment
+  (defblt "skip-duplicates" 3
+    (-> (b/from-array [true false true])
+        b/to-property
+        (b/sampled-by
+         (-> (b/sequentially 5 [false true true true false true])
+             b/skip-duplicates)))
+    (fn [v]
+      (js/console.log v)
+      (ok? v))))
+
+
+(comment
+  (defblt "skip-duplicates"
+    (-> (b/sequentially 5 [true true true true false true])
+        b/skip-duplicates)
+    [true false true]))
