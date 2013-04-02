@@ -182,6 +182,9 @@
 (defn awaiting [stream stream2]
   (.awaiting stream stream2))
 
+(defn zip [stream stream2 f]
+  (.zip stream stream2 f))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Properties
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -244,6 +247,12 @@
 
 (defn combine-template [template]
   (js/Bacon.combineTemplate (clj->js template)))
+
+(defn zip-as-array [streams]
+  (js/Bacon.zipAsArray (into-array streams)))
+
+(defn zip-with [streams f]
+  (js/Bacon.zipWith (into-array streams) f))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

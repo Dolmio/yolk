@@ -22,6 +22,8 @@ Bacon.combineAsArray = function() {};
 Bacon.combineWith = function() {};
 Bacon.combineTemplate = function() {};
 Bacon.latestValue = function() {};
+Bacon.zipWith = function() {};
+Bacon.zipAsArray = function() {};
 
 Bacon.Observable.prototype.onValue = function() {};
 Bacon.Observable.prototype.onValues = function() {};
@@ -65,6 +67,7 @@ Bacon.EventStream.prototype.mapEnd = function() {};
 Bacon.EventStream.prototype.withHandler = function() {};
 Bacon.EventStream.prototype.withSubscribe = function() {};
 Bacon.EventStream.prototype.slidingWindow = function() {};
+Bacon.EventStream.prototype.zip = function() {};
 
 
 Bacon.Property.prototype.sample = function() {};
