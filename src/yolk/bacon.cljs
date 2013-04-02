@@ -39,7 +39,7 @@
   (js/Bacon.interval ms value))
 
 (defn sequentially [ms values]
-  (js/Bacon.sequentially ms values))
+  (js/Bacon.sequentially ms (into-array values)))
 
 (defn repeatedly [ms values]
   (js/Bacon.repeatedly ms values))
