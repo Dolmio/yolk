@@ -52,6 +52,7 @@ Bacon.EventStream.prototype.map = function() {};
 Bacon.EventStream.prototype.filter = function() {};
 Bacon.EventStream.prototype.delay = function() {};
 Bacon.EventStream.prototype.throttle = function() {};
+Bacon.EventStream.prototype.debounce = function() {};
 Bacon.EventStream.prototype.bufferWithTime = function() {};
 Bacon.EventStream.prototype.bufferWithCount = function() {};
 Bacon.EventStream.prototype.merge = function() {};

@@ -99,8 +99,8 @@
 (defn throttle [observable ms]
   (.throttle observable ms))
 
-(defn throttle2 [observable ms]
-  (.throttle2 observable ms))
+(defn debounce [observable ms]
+  (.debounce observable ms))
 
 (defn do-action [observable f]
   (.doAction observable f))
