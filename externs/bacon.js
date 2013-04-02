@@ -16,7 +16,6 @@ Bacon.constant = function() {};
 Bacon.never = function() {};
 Bacon.once = function() {};
 Bacon.fromArray = function() {};
-Bacon.combineAll = function() {};
 Bacon.mergeAll = function() {};
 Bacon.combineAsArray = function() {};
 Bacon.combineWith = function() {};

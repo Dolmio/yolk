@@ -239,9 +239,6 @@
 (defn merge-all [streams]
   (js/Bacon.mergeAll (into-array streams)))
 
-(defn combine-all [observables f]
-  (js/Bacon.combineAll (into-array observables) f))
-
 (defn combine-with [observables f]
   (js/Bacon.combineWith (into-array observables) f))
 
