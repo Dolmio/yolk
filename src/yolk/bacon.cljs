@@ -69,6 +69,9 @@
 (defn map [observable f-or-property]
   (.map observable (kw->fn f-or-property)))
 
+(defn map-apply [obs f]
+  (map obs (fn [vs] (apply f vs))))
+
 (defn map-error [observable f]
   (.map-error observable f))
 
@@ -141,6 +144,10 @@
 
 (defn on-end [observable f]
   (.onEnd observable f))
+
+(defn on-if [obs on-true on-false]
+  (-> obs filter (on-value on-true))
+  (-> obs not filter (on-value on-false)))
 
 (defn errors [observable]
   (.errors observable))
@@ -280,3 +287,5 @@
 
 (defn log-action [sexp]
   (log-with (str sexp " =>")))
+  
+
