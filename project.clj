@@ -1,4 +1,4 @@
-(defproject yolk "0.5.0"
+(defproject yolk "0.6.0"
   :description "Bacon and Eggs"
   :url "https://github.com/cicayda/yolk"
   :license {:name "Eclipse Public License"
