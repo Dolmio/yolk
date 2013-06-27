@@ -1,5 +1,5 @@
 (ns yolk.bacon
-  (:refer-clojure :exclude [and filter map merge next not or repeatedly take take-while]))
+  (:refer-clojure :exclude [and filter map merge next not or repeatedly take take-while when]))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Events
@@ -56,6 +56,11 @@
 (defn later [delay value]
   (js/Bacon.later delay value))
 
+(defn from-node-callback [f]
+  (js/Bacon.fromNodeCallback [f]))
+
+(defn from-callback [f]
+  (js/Bacon.fromCallback [f]))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Observables
@@ -105,6 +110,9 @@
 (defn debounce [observable ms]
   (.debounce observable ms))
 
+(defn debounce-immediate [observable ms]
+  (.debounce observable ms))
+
 (defn do-action [observable f]
   (.doAction observable f))
 
@@ -117,14 +125,23 @@
 (defn flat-map-latest [observable f]
   (.flatMapLatest observable f))
 
+(defn flat-map-first [observable f]
+  (.flatMapFirst observable f))
+
 (defn scan [observable seed f]
   (.scan observable seed f))
+
+(defn fold [observable seed f]
+  (.fold observable seed f))
 
 (defn diff [observable start f]
   (.diff observable start f))
 
-(defn sliding-window [observable n]
-  (.slidingWindow observable n))
+(defn sliding-window
+  ([observable n min]
+     (.slidingWindow observable n min))
+  ([observable n]
+     (.slidingWindow observable n)))
 
 (defn log [stream]
   (.log stream))
@@ -180,6 +197,9 @@
 (defn buffer-with-count [stream n]
   (.bufferWithCount stream n))
 
+(defn buffer-with-time-or-count [stream delay count]
+  (.bufferWithTimeOrCount stream delay count))
+
 (defn to-property
   ([stream]
      (.toProperty stream))
@@ -191,6 +211,9 @@
 
 (defn zip [stream stream2 f]
   (.zip stream stream2 f))
+
+(defn skip-until [stream starter]
+  (.skipUntil stream starter))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Properties
@@ -277,6 +300,22 @@
 
 (defn plug [bus stream]
   (.plug bus stream))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Join Patterns
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defn- make-join-args [observables+fn-pairs]
+  (reduce (fn [ results [observables fn]]
+            (concat results [(clj->js observables) fn]))
+          []
+          (partition 2 observables+fn-pairs)))
+
+(defn when [& observables+fn-pairs]
+  (apply js/Bacon.when (make-join-args observables+fn-pairs)))
+
+(defn update [init & observables+fn-pairs]
+  (apply js/Bacon.update init (make-join-args observables+fn-pairs)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Util
