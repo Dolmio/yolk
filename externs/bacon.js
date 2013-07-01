@@ -87,3 +87,14 @@ Bacon.Property.prototype.delay = function() {};
 Bacon.Property.prototype.debounce = function() {};
 Bacon.Property.prototype.throttle = function() {};
 Bacon.Property.prototype.delayChanges = function() {};
+
+Bacon.Bus = function() {};
+Bacon.Bus.prototype.plug = function() {};
+Bacon.Bus.prototype.push = function() {};
+Bacon.Bus.prototype.end = function() {};
+Bacon.Bus.prototype.error = function() {};
+
+Bacon.Initial = function() {};
+Bacon.Next = function() {};
+Bacon.End = function() {};
+Bacon.Error = function() {};
