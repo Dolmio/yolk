@@ -72,6 +72,8 @@ Bacon.EventStream.prototype.awaiting = function() {};
 Bacon.EventStream.prototype.startWith = function() {};
 Bacon.EventStream.prototype.withHandler = function() {};
 Bacon.EventStream.prototype.withSubscribe = function() {};
+Bacon.EventStream.prototype.skipWhile = function() {};
+Bacon.EventStream.prototype.sampledBy = function() {};
 
 
 Bacon.Property.prototype.sample = function() {};
@@ -87,6 +89,8 @@ Bacon.Property.prototype.delay = function() {};
 Bacon.Property.prototype.debounce = function() {};
 Bacon.Property.prototype.throttle = function() {};
 Bacon.Property.prototype.delayChanges = function() {};
+Bacon.Property.prototype.startWith = function() {};
+Bacon.Property.prototype.awaiting = function() {};
 
 Bacon.Bus = function() {};
 Bacon.Bus.prototype.plug = function() {};

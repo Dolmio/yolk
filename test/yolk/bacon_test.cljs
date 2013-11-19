@@ -79,6 +79,36 @@
       b/not)
   ok?)
 
+(defblt "start-with" 1
+        (-> (b/start-with (b/to-property (b/from-array [])) 1)
+            (b/take 1))
+        ok?)
+
+(defblt "skip-while" 3
+        (-> (b/from-array [false false true true true])
+            (b/skip-while false?))
+        ok?)
+
+(defblt "end-on-error" 3
+        (-> (b/from-array [true true true  (b/error "error") true])
+            (b/end-on-error))
+        ok?)
+
+(defblt "end-on-error-with-predicate" 5
+        (-> (b/from-array [true true true  (b/error "harmless")
+                           true  true (b/error "fatal") true false])
+            (b/end-on-error #(= "fatal" %)))
+        ok?)
+
+(defblt "sampled-by" 3
+            (b/sampled-by (b/from-array [true]) (b/from-array [false false false]))
+            ok?)
+
+(defblt "sampled-by-with-combinator" 3
+        (-> (b/from-array [true])
+            (b/sampled-by (b/from-array [false false false]) #(inc 0)))
+        #(equal? % 1))
+
 (comment
   (defblt "skip-duplicates" 3
     (-> (b/from-array [true false true])

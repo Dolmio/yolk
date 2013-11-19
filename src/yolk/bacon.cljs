@@ -169,8 +169,11 @@
 (defn errors [observable]
   (.errors observable))
 
-(defn end-on-error [observable]
+(defn end-on-error
+  ([observable ]
   (.endOnError observable))
+  ([observable f]
+   (.endOnError observable f)))
 
 (defn subscribe [observable f]
   (.subscribe observable f))
@@ -206,14 +209,17 @@
   ([stream x]
      (.toProperty stream x)))
 
-(defn awaiting [stream stream2]
-  (.awaiting stream stream2))
+(defn awaiting [stream-or-property stream2-or-property2]
+  (.awaiting stream-or-property stream2-or-property2))
 
 (defn zip [stream stream2 f]
   (.zip stream stream2 f))
 
 (defn skip-until [stream starter]
   (.skipUntil stream starter))
+
+(defn skip-while [stream predicate]
+  (.skipWhile stream predicate))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Properties
@@ -242,10 +248,10 @@
   (.sample prop ms))
 
 (defn sampled-by
-  ([prop observable]
-     (.sampledBy prop observable))
-  ([prop observable f]
-     (.sampledBy prop observable f)))
+  ([prop-or-stream observable]
+     (.sampledBy prop-or-stream observable))
+  ([prop-or-stream observable f]
+     (.sampledBy prop-or-stream observable f)))
 
 (defn changes [prop]
   (.changes prop))
@@ -255,6 +261,9 @@
 
 (defn or [prop prop2]
   (.or prop prop2))
+
+(defn start-with [prop value]
+  (.startWith prop value))
 
 (comment "todo"
          (defn decode [prop mapping]))
